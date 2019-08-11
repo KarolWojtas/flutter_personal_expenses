@@ -24,4 +24,8 @@ class TransactionFormData {
   String title;
   double amount;
   DateTime date;
+
+  void setAmount(String amountString) {
+    amount = double.tryParse(amountString) ?? 0;
+  }
 }

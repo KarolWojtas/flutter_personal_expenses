@@ -37,26 +37,31 @@ class TransactionForm extends StatelessWidget {
                     return parsedAmount == null ? 'Invalid number' : null;
                   }
                 },
-                onSaved: (amountString) => _transactionFormData.amount =
-                    double.tryParse(amountString) ?? 0,
+                onSaved: (amountString) =>
+                    _transactionFormData.setAmount(amountString),
+                onFieldSubmitted: (amountString) {
+                  _transactionFormData.setAmount(amountString);
+                  _submitForm(context);
+                },
               ),
               FlatButton(
                   child: Text('Add'),
                   textColor: Colors.deepPurple,
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      onSaveCallback(
-                          Transaction.fromFormData(_transactionFormData));
-                      _formKey.currentState.reset();
-                      FocusScope.of(context).unfocus();
-                    }
-                  })
+                  onPressed: () => _submitForm(context))
             ],
           ),
           key: _formKey,
         ),
       ),
     );
+  }
+
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      onSaveCallback(Transaction.fromFormData(_transactionFormData));
+      _formKey.currentState.reset();
+      FocusScope.of(context).unfocus();
+    }
   }
 }

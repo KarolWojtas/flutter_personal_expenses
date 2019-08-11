@@ -22,17 +22,24 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Card(
-            child: Container(child: Text('chart')),
-          ),
-          Expanded(flex: 2, child: UserTransactions())
-        ],
+      appBar: AppBar(
+        actions: <Widget>[IconButton(icon: Icon(Icons.add), onPressed: () {})],
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Card(
+              child: Container(child: Text('chart')),
+            ),
+            UserTransactions()
+          ],
+        ),
+      ),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -15,7 +15,7 @@ class TransactionItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Expanded(
+            Flexible(
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
@@ -33,7 +33,7 @@ class TransactionItem extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
+            Flexible(
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -11,6 +11,7 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: transactions.length,
+      shrinkWrap: true,
       itemBuilder: (BuildContext ctx, int index) {
         return TransactionItem(transactions[index]);
       },

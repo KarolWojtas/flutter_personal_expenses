@@ -25,10 +25,8 @@ class _UserTransactionsState extends State<UserTransactions> {
     return Column(
       children: <Widget>[
         TransactionForm(onSaveCallback: _onAddTransaction),
-        Expanded(
-          child: TransactionList(
-            transactions: transactions,
-          ),
+        TransactionList(
+          transactions: transactions,
         )
       ],
     );
