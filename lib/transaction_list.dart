@@ -9,12 +9,13 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: transactions.length,
-      shrinkWrap: true,
-      itemBuilder: (BuildContext ctx, int index) {
-        return TransactionItem(transactions[index]);
-      },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext ctx, int index) {
+          return TransactionItem(transactions[index]);
+        },
+        childCount: transactions.length,
+      ),
     );
   }
 }

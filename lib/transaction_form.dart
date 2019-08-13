@@ -4,11 +4,19 @@ import 'models/transaction.dart';
 
 typedef OnSaveTransactionData = void Function(Transaction tx);
 
-class TransactionForm extends StatelessWidget {
+class TransactionForm extends StatefulWidget {
   final OnSaveTransactionData onSaveCallback;
   TransactionForm({this.onSaveCallback});
+
+  @override
+  _TransactionFormState createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
   final _formKey = GlobalKey<FormState>();
+
   final TransactionFormData _transactionFormData = TransactionFormData();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -59,7 +67,7 @@ class TransactionForm extends StatelessWidget {
   void _submitForm(BuildContext context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      onSaveCallback(Transaction.fromFormData(_transactionFormData));
+      widget.onSaveCallback(Transaction.fromFormData(_transactionFormData));
       _formKey.currentState.reset();
       FocusScope.of(context).unfocus();
     }
