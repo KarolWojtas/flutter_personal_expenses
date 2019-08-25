@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/log_delegate.dart';
 import 'bloc/transaction_bloc.dart';
 import 'bloc/transaction_state.dart';
+import 'chart.dart';
 import 'models/transaction.dart';
 import 'transaction_form.dart';
 import 'transaction_list.dart';
@@ -23,8 +24,15 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Personal Expenses',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            textTheme: ThemeData.light()
+                .textTheme
+                .copyWith(title: TextStyle(fontFamily: 'OpenSans')),
+            appBarTheme: AppBarTheme(
+                textTheme: ThemeData.light().textTheme.copyWith(
+                    title: TextStyle(fontFamily: 'OpenSans', fontSize: 20))),
+            primarySwatch: Colors.deepPurple,
+            accentColor: Colors.lightBlueAccent,
+            fontFamily: 'Quicksand'),
         home: MyHomePage(),
       ),
     );
@@ -60,11 +68,19 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
           SliverToBoxAdapter(
-            child: Container(child: Text('chart')),
+            child: BlocBuilder<TransactionBloc, TransactionState>(
+              builder: (BuildContext ctx, TransactionState state) => Chart(
+                transactions: state.transactions,
+                totalWeekExpenses: state.totalWeekExpenses,
+              ),
+            ),
           ),
           BlocBuilder<TransactionBloc, TransactionState>(
             builder: (context, TransactionState state) => TransactionList(
-              transactions: state.transactions,
+              transactions: state.transactions
+                  .where((transaction) => transaction.date
+                      .isAfter(DateTime.now().subtract(Duration(days: 7))))
+                  .toList(),
             ),
           )
         ],

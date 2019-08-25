@@ -19,17 +19,18 @@ class TransactionItem extends StatelessWidget {
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.deepPurple, width: 2)),
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 2)),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  '\$${tx.amount}',
+                  '\$${tx.amount.toStringAsFixed(2)}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.deepPurple),
+                      color: Theme.of(context).primaryColor),
                 ),
               ),
             ),
@@ -40,7 +41,7 @@ class TransactionItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     '${tx.title}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.title,
                     textAlign: TextAlign.left,
                   ),
                   FutureBuilder(

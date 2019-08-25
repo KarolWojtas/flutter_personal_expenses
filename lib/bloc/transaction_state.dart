@@ -5,11 +5,16 @@ import '../models/transaction.dart';
 // state
 class TransactionState extends Equatable {
   final List<Transaction> transactions;
+  final double totalWeekExpenses;
 
-  TransactionState({this.transactions}) : super([transactions]);
+  TransactionState({this.transactions, this.totalWeekExpenses})
+      : super([transactions, totalWeekExpenses]);
 
-  TransactionState copyWith({List<Transaction> transactions}) {
-    return TransactionState(transactions: transactions ?? this.transactions);
+  TransactionState copyWith(
+      {List<Transaction> transactions, double totalWeekExpenses}) {
+    return TransactionState(
+        transactions: transactions ?? this.transactions,
+        totalWeekExpenses: totalWeekExpenses ?? this.totalWeekExpenses);
   }
 
   @override
