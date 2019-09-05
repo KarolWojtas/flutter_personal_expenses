@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Personal Expenses',
         theme: ThemeData(
-            textTheme: ThemeData.light()
-                .textTheme
-                .copyWith(title: TextStyle(fontFamily: 'OpenSans')),
+            textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(fontFamily: 'OpenSans'),
+                button: TextStyle(color: Colors.white)),
             appBarTheme: AppBarTheme(
                 textTheme: ThemeData.light().textTheme.copyWith(
                     title: TextStyle(fontFamily: 'OpenSans', fontSize: 20))),
@@ -96,15 +96,18 @@ class MyHomePage extends StatelessWidget {
     final TransactionBloc bloc = BlocProvider.of<TransactionBloc>(context);
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (_) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: SingleChildScrollView(child:
-                TransactionForm(onSaveCallback: (Transaction transaction) {
-              bloc.dispatch(AddTransactionEvent(transaction: transaction));
-              Navigator.of(context).pop();
-            })),
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: SingleChildScrollView(child:
+                  TransactionForm(onSaveCallback: (Transaction transaction) {
+                bloc.dispatch(AddTransactionEvent(transaction: transaction));
+                Navigator.of(context).pop();
+              })),
+            ),
           );
         });
   }

@@ -11,56 +11,39 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 2)),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                padding: EdgeInsets.all(10),
-                child: FittedBox(
-                  child: Text(
-                    NumberFormat.compactSimpleCurrency(
-                            locale: defaultLocale, decimalDigits: 0)
-                        .format(tx.amount),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                ),
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      elevation: 2,
+      child: ListTile(
+        leading: CircleAvatar(
+          radius: 30,
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: FittedBox(
+              child: Text(
+                NumberFormat.compactSimpleCurrency(
+                        locale: defaultLocale, decimalDigits: 0)
+                    .format(tx.amount),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white70),
               ),
             ),
-            Flexible(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '${tx.title}',
-                    style: Theme.of(context).textTheme.title,
-                    textAlign: TextAlign.left,
-                  ),
-                  FutureBuilder(
-                    builder: (BuildContext ctx, AsyncSnapshot asyncSnapshot) =>
-                        Text(
-                      DateFormat.yMMMd(defaultLocale).format(tx.date),
-                      style: TextStyle(fontSize: 13, color: Colors.grey),
-                      textAlign: TextAlign.left,
-                    ),
-                    future: initializeDateFormatting(defaultLocale),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
+        ),
+        title: Text(
+          '${tx.title}',
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.left,
+        ),
+        subtitle: FutureBuilder(
+          builder: (BuildContext ctx, AsyncSnapshot asyncSnapshot) => Text(
+            DateFormat.yMMMd(defaultLocale).format(tx.date),
+            style: TextStyle(fontSize: 13, color: Colors.grey),
+            textAlign: TextAlign.left,
+          ),
+          future: initializeDateFormatting(defaultLocale),
         ),
       ),
     );

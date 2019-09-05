@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import 'models/transaction.dart';
 
@@ -52,6 +54,37 @@ class _TransactionFormState extends State<TransactionForm> {
                   _submitForm(context);
                 },
               ),
+              Container(
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: _transactionFormData.date != null
+                          ? FutureBuilder(
+                              builder: (BuildContext ctx,
+                                      AsyncSnapshot asyncSnapshot) =>
+                                  Text(
+                                    'Picked date: ${DateFormat.yMMMd('pl-PL').format(_transactionFormData.date)}',
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.grey),
+                                    textAlign: TextAlign.left,
+                                  ),
+                              future: initializeDateFormatting())
+                          : Text('No date chosen'),
+                    ),
+                    RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      textColor: Theme.of(context).textTheme.button.color,
+                      child: Text(
+                        'Choose date',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () => _chooseDate(context),
+                    ),
+                  ],
+                ),
+              ),
               FlatButton(
                   child: Text('Add'),
                   textColor: Theme.of(context).accentColor,
@@ -71,5 +104,16 @@ class _TransactionFormState extends State<TransactionForm> {
       _formKey.currentState.reset();
       FocusScope.of(context).unfocus();
     }
+  }
+
+  void _chooseDate(BuildContext context) async {
+    var date = await showDatePicker(
+        context: context,
+        initialDate: _transactionFormData.date ?? DateTime.now(),
+        firstDate: DateTime.now().subtract(Duration(days: 7)),
+        lastDate: DateTime.now());
+    setState(() {
+      _transactionFormData.date = date ?? null;
+    });
   }
 }

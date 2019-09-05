@@ -41,14 +41,18 @@ class Chart extends StatelessWidget {
           weekdayLiteral: DateFormat.E().format(weekday),
           expensesAmount: expensesAmount,
           expensesPercentage: expensesAmount / this.totalWeekExpenses * 100);
-    }).map((ChartBarModel chartBarModel) {
-      return Flexible(
-        fit: FlexFit.tight,
-        child: ChartBar(
-          chartBarModel: chartBarModel,
-        ),
-      );
-    }).toList();
+    })
+        .map((ChartBarModel chartBarModel) {
+          return Flexible(
+            fit: FlexFit.tight,
+            child: ChartBar(
+              chartBarModel: chartBarModel,
+            ),
+          );
+        })
+        .toList()
+        .reversed
+        .toList();
   }
 
   bool datesAreEqual(DateTime firstDate, DateTime secondDate) =>
