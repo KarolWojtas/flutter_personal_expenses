@@ -16,11 +16,15 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: this.transactions.isNotEmpty && this.totalWeekExpenses != null
-            ? this.mapTransactionsToBars(this.transactions)
-            : [Text('No transactions')],
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children:
+              this.transactions.isNotEmpty && this.totalWeekExpenses != null
+                  ? this.mapTransactionsToBars(this.transactions)
+                  : [Text('No transactions')],
+        ),
       ),
     );
   }
@@ -38,8 +42,11 @@ class Chart extends StatelessWidget {
           expensesAmount: expensesAmount,
           expensesPercentage: expensesAmount / this.totalWeekExpenses * 100);
     }).map((ChartBarModel chartBarModel) {
-      return ChartBar(
-        chartBarModel: chartBarModel,
+      return Flexible(
+        fit: FlexFit.tight,
+        child: ChartBar(
+          chartBarModel: chartBarModel,
+        ),
       );
     }).toList();
   }

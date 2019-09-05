@@ -24,13 +24,17 @@ class TransactionItem extends StatelessWidget {
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 padding: EdgeInsets.all(10),
-                child: Text(
-                  '\$${tx.amount.toStringAsFixed(2)}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor),
+                child: FittedBox(
+                  child: Text(
+                    NumberFormat.compactSimpleCurrency(
+                            locale: defaultLocale, decimalDigits: 0)
+                        .format(tx.amount),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
             ),

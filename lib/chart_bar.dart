@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'models/chart_bar.dart';
 
@@ -12,10 +13,15 @@ class ChartBar extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Text('\$${chartBarModel.expensesAmount.toStringAsFixed(0)}'),
+        FittedBox(
+          child: Text(NumberFormat.compactSimpleCurrency(
+                  locale: 'pl_PL', decimalDigits: 0)
+              .format(chartBarModel.expensesAmount)),
+        ),
         CustomPaint(
             size: Size(10, 100),
             painter: ChartBarPainter(
+                context: context,
                 expensesPercentage: chartBarModel.expensesPercentage)),
         Text('${chartBarModel.weekdayLiteral}')
       ],
@@ -25,14 +31,17 @@ class ChartBar extends StatelessWidget {
 
 class ChartBarPainter extends CustomPainter {
   final double expensesPercentage;
-  final Paint backgroundPaint = Paint();
-  final Paint percentagePaint = Paint();
+  final BuildContext context;
+  final Paint backgroundPaint = Paint()..color = Colors.white70;
+  final Paint percentagePaint;
+  final Paint borderPaint = Paint()
+    ..color = Colors.grey
+    ..strokeWidth = 1
+    ..style = PaintingStyle.stroke;
   final Radius globalRadius = Radius.circular(5);
 
-  ChartBarPainter({this.expensesPercentage}) {
-    backgroundPaint.color = Colors.amber;
-    percentagePaint.color = Colors.deepOrange;
-  }
+  ChartBarPainter({this.expensesPercentage, this.context})
+      : this.percentagePaint = Paint()..color = Theme.of(context).primaryColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -43,11 +52,12 @@ class ChartBarPainter extends CustomPainter {
         0, percentageOffset, size.width, size.height,
         bottomLeft: globalRadius,
         bottomRight: globalRadius,
-        topLeft: percentageOffset == 0 ? globalRadius : Radius.zero,
-        topRight: percentageOffset == 0 ? globalRadius : Radius.zero);
+        topLeft: percentageOffset <= 1 ? globalRadius : Radius.zero,
+        topRight: percentageOffset <= 1 ? globalRadius : Radius.zero);
 
     canvas.drawRRect(backgroundRect, backgroundPaint);
     canvas.drawRRect(percentageRect, percentagePaint);
+    canvas.drawRRect(backgroundRect, borderPaint);
   }
 
   @override
