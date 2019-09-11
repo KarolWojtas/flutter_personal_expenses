@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:personal_expenses/bloc/transaction_bloc.dart';
+import 'package:personal_expenses/bloc/transaction_state.dart';
 
 import 'models/transaction.dart';
 
@@ -45,7 +48,17 @@ class TransactionItem extends StatelessWidget {
           ),
           future: initializeDateFormatting(defaultLocale),
         ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () => _deleteTransaction(tx.id, context),
+          color: Theme.of(context).errorColor,
+        ),
       ),
     );
+  }
+
+  void _deleteTransaction(String transactionId, BuildContext context) {
+    TransactionBloc bloc = BlocProvider.of<TransactionBloc>(context);
+    bloc.dispatch(DeleteTransactionEvent(id: transactionId));
   }
 }

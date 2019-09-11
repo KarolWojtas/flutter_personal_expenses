@@ -9,7 +9,13 @@ class LogDelegate extends BlocDelegate {
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
     if (event is AddTransactionEvent) {
-      developer.log('BlocDelegate: new transaction ${event.transaction.title}');
+      log(event, event.transaction.title);
+    } else if (event is DeleteTransactionEvent) {
+      log(event, event.id);
     }
+  }
+
+  void log(Object event, String message) {
+    developer.log('BlocDelegate[${event.runtimeType}]: $message');
   }
 }

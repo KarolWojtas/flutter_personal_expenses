@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/transaction.dart';
 
@@ -32,4 +33,13 @@ class AddTransactionEvent extends TransactionEvent {
   AddTransactionEvent({this.transaction}) : super([transaction]);
   @override
   String toString() => 'AddTransaction';
+}
+
+class DeleteTransactionEvent extends TransactionEvent {
+  final String id;
+  DeleteTransactionEvent({@required this.id}): super([id]);
+
+  @override
+  String toString() => 'DeleteTransaction';
+
 }

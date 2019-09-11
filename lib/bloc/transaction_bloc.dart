@@ -24,6 +24,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
             ..add(event.transaction),
           totalWeekExpenses:
               currentState.totalWeekExpenses + event.transaction.amount);
+    } else if (event is DeleteTransactionEvent) {
+      yield TransactionState(
+          transactions: currentState.transactions
+              .where((transaction) => transaction.id != event.id)
+              .toList(),
+          totalWeekExpenses: currentState.totalWeekExpenses -
+              currentState.transactions
+                  .singleWhere((transaction) => transaction.id == event.id)
+                  ?.amount);
     } else {
       yield currentState;
     }
