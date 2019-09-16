@@ -23,7 +23,7 @@ class TransactionList extends StatelessWidget {
                     'assets/waiting.png',
                     fit: BoxFit.cover,
                   ),
-                )
+                ),
               ],
             ),
           )

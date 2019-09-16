@@ -40,50 +40,79 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final chart = BlocBuilder<TransactionBloc, TransactionState>(
+    builder: (BuildContext ctx, TransactionState state) => Chart(
+      transactions: state.transactions,
+      totalWeekExpenses: state.totalWeekExpenses,
+    ),
+  );
+  final transactionList = BlocBuilder<TransactionBloc, TransactionState>(
+    builder: (context, TransactionState state) => TransactionList(
+      transactions: state.transactions
+          .where((transaction) => transaction.date
+              .isAfter(DateTime.now().subtract(Duration(days: 7))))
+          .toList(),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            floating: true,
-            expandedHeight: 75,
-            title: Center(
-              child: Text(
-                'PersonalExpenses',
-                style: TextStyle(fontSize: 30, letterSpacing: 1),
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return CustomScrollView(
+              slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              expandedHeight: 75,
+              title: Center(
+                child: Text(
+                  'PersonalExpenses',
+                  style: TextStyle(fontSize: 30, letterSpacing: 1),
+                ),
               ),
+              flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/stars.jpg'),
+                        fit: BoxFit.cover)),
+              )),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () => startAddNewTransaction(context))
+              ],
             ),
-            flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/stars.jpg'),
-                      fit: BoxFit.cover)),
-            )),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => startAddNewTransaction(context))
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: BlocBuilder<TransactionBloc, TransactionState>(
-              builder: (BuildContext ctx, TransactionState state) => Chart(
-                transactions: state.transactions,
-                totalWeekExpenses: state.totalWeekExpenses,
-              ),
-            ),
-          ),
-          BlocBuilder<TransactionBloc, TransactionState>(
-            builder: (context, TransactionState state) => TransactionList(
-              transactions: state.transactions
-                  .where((transaction) => transaction.date
-                      .isAfter(DateTime.now().subtract(Duration(days: 7))))
-                  .toList(),
-            ),
-          )
-        ],
+          ]..addAll(orientation == Orientation.portrait
+                  ? [
+                      SliverToBoxAdapter(
+                        child: chart,
+                      ),
+                      transactionList
+                    ]
+                  : [
+                      SliverGrid.count(
+                        crossAxisCount: 2,
+                        children: <Widget>[
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                BoxConstraints constraints) {
+                              return Container(
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4),
+                                    child: chart),
+                                height: constraints.maxHeight,
+                              );
+                            },
+                          ),
+                          CustomScrollView(
+                            slivers: <Widget>[transactionList],
+                          )
+                        ],
+                      ),
+                    ]));
+        },
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () => startAddNewTransaction(context),
